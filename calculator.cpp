@@ -19,15 +19,14 @@ double checkZero(double liczba) {
 }
 
 int main() {
-    //kalkulator
-    cout << "******************************\n";
+
+    cout << "*****************************\n";
     cout << "KALKULATOR\n";
-    cout << "*****************************\n" << endl;
-    //wczytuje dwie liczby zmiennoprzecinkowe;
+    cout << "*****************************\n";
+
     double liczba1, liczba2, resultat;
     char operacja;
 
-        //wczytuje dwie liczby zmiennoprzecinkowe;
         cout << "Podaj pierwsza liczbe: ";
         while (!(cin >> liczba1)) { 
             cout << "To nie jest liczba! Podaj jeszcze raz: ";
@@ -43,7 +42,7 @@ int main() {
         }
         
         while (true) {
-        //Pyta o działanie (+ - * / %) — znak działania jako char;
+
         cout << "Podaj operacje (+ - * / %, q -> exit): ";
         cin >> operacja;
 
@@ -53,7 +52,6 @@ int main() {
         }
 
         bool poprawnaOperacja = true;
-
 
         switch (operacja) {
             case '+':
