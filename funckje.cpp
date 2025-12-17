@@ -2,17 +2,17 @@
 #include <string>
 using namespace std;
 
-
-string helloWorld(string tekst) {
-    for (int i = 0; i < 10; i ++) {
-        cout << tekst << endl;
-    }
-    return tekst;
-}
+void przezWartosc(int x) {x += 10;}
+void przezReferencje(int &x) {x += 10;}
+void przezWskaznik(int *x) {*x += 10;}
 
 int main(){
-    string tekst;
-    cout << "wprowadz tekst: ";
-    cin >> tekst;
-    helloWorld(tekst);
+    int a = 5;
+    przezWartosc(a);
+    cout << "wartosc " << a << endl;
+    przezReferencje(a);
+    cout << "referencje " << a << endl;
+    przezWskaznik(&a);
+    cout << "wskaznik " << a << endl;
+
 }

@@ -1,82 +1,109 @@
 #include <iostream>
-#include <string>
+
 using namespace std;
 
-void wypiszTabele(char tabela[3][3]) {
+/**
+ * Funkcja odpowiada za estetyczne wyświetlenie planszy 3x3 w konsoli.
+ * Przyjmuje dwuwymiarową tablicę znaków jako parametr.
+ */
+void wypiszPlansze(char plansza[3][3]) {
     for (int i = 0; i < 3; i++) {
         cout << "   |   |   " << endl;
-        cout << " " << tabela[i][0] << " | " << tabela[i][1] << " | " << tabela[i][2] << endl;
-
-        if (i < 2) {
-            cout << "___|___|___" << endl;
-        }
+        cout << " " << plansza[i][0] << " | " << plansza[i][1] << " | " << plansza[i][2] << endl;
+        // Rysowanie linii poziomych (tylko między wierszami)
+        if (i < 2) cout << "___|___|___" << endl;
     }
     cout << "   |   |   " << endl;
 }
 
-main() {
-    char tabela[3][3] = {
-        {' ', ' ', ' '},
-        {' ', ' ', ' '},
-        {' ', ' ', ' '}
-    };
+int main() {
+    char wybor;
 
-    const char graczX = 'X';
-    const char graczO = 'O';
-    char terazGra = graczX;
-    int w,k = -1;
-    char zwyciezca = ' ';
+    // Główna pętla programu umożliwiająca wielokrotne rozgrywki [Kryterium: do-while]
+    do {
+        // Inicjalizacja pustej planszy na początku każdej rundy
+        char plansza[3][3] = {
+            {' ', ' ', ' '},
+            {' ', ' ', ' '},
+            {' ', ' ', ' '}
+        };
 
-    for (int i = 0; i < 9; i++) {
-        wypiszTabele(tabela);
+        const char graczX = 'X';
+        const char graczO = 'O';
+        char terazGra = graczX;
+        char zwyciezca = ' ';
+        int w = -1, k = -1;
 
-        if(zwyciezca != ' ') {
-            break;
-        }
+        // Pętla tury gry - maksymalnie 9 ruchów na planszy 3x3
+        for (int i = 0; i < 9; i++) {
+            wypiszPlansze(plansza);
 
-        cout << "Teraz gra: " << terazGra << endl;
-        while(true) {
-            cout << "Wprowadz w & k od 0 do 2 dla wiersza i kolumny: ";
-            cin >> w >> k;
-            if (w < 0 || w > 2 || k < 0 || k > 2) {
-                cout << "Niepoprawna liczba, sprobuj ponownie." << endl;
-            }else if (tabela[w][k] != ' ') {
-                cout << "Pole wypelnione, sprobuj ponownie" << endl;
-            }else {
-                break;
+            // Sprawdzenie, czy gra została rozstrzygnięta w poprzedniej turze. 
+            // Jeśli mamy zwycięzcę, przerywamy pętlę przed zapytaniem o kolejny ruch.
+            if (zwyciezca != ' '){break;} 
+
+            cout << "Teraz gra: " << terazGra << endl;
+
+            // Pętla walidacji danych wejściowych [Kryterium: obsługa interakcji]
+            while (true) {
+                cout << "Wprowadz w & k od 0 do 2: ";
+                cin >> w >> k;
+
+                // Sprawdzenie czy dane są liczbami oraz czy mieszczą się w zakresie
+                if (!cin || w < 0 || w > 2 || k < 0 || k > 2) {
+                    cout << "Niepoprawne dane! Podaj liczby od 0 do 2." << endl;
+                    cin.clear(); // Wyczyszczenie flagi błędu strumienia
+                    cin.ignore(10000, '\n'); // Odrzucenie błędnych znaków z bufora
+                }
+                // Sprawdzenie czy wybrane pole jest puste
+                else if (plansza[w][k] != ' ') {
+                    cout << "Pole zajete! Wybierz inne." << endl;
+                }
+                else break; // Dane poprawne, wyjście z pętli walidacji
             }
-            w,k = -1;
-            cin.clear();
-            cin.ignore(10000, '\n');
-        }
 
-        tabela[w][k] = terazGra;
-        terazGra = (terazGra == graczX) ? graczO : graczX;
+            // Zaktualizowanie stanu planszy i zmiana gracza
+            plansza[w][k] = terazGra;
+            terazGra = (terazGra == graczX) ? graczO : graczX;
 
-        for (int w = 0; w < 3; w++) {
-            if (tabela[w][0] != ' ' && tabela[w][0] == tabela[w][1] && tabela[w][1] == tabela[w][2]){
-                zwyciezca = tabela[w][0];
-                break;
+            // LOGIKA SPRAWDZANIA WARUNKÓW ZWYCIĘSTWA
+            
+            // Sprawdzenie wierszy
+            for (int r = 0; r < 3; r++){
+                if (plansza[r][0] != ' ' && plansza[r][0] == plansza[r][1] && plansza[r][1] == plansza[r][2])
+                    zwyciezca = plansza[r][0];
+            }
+
+            // Sprawdzenie kolumn
+            for (int c = 0; c < 3; c++){
+                if (plansza[0][c] != ' ' && plansza[0][c] == plansza[1][c] && plansza[1][c] == plansza[2][c])
+                    zwyciezca = plansza[0][c];
+            }
+
+            // Sprawdzenie przekątnych (główna i boczna)
+            if (plansza[0][0] != ' ' && plansza[0][0] == plansza[1][1] && plansza[1][1] == plansza[2][2]){
+                zwyciezca = plansza[0][0];
+            }
+            if (plansza[0][2] != ' ' && plansza[0][2] == plansza[1][1] && plansza[1][1] == plansza[2][0]){
+                zwyciezca = plansza[0][2];
             }
         }
 
-        for (int k = 0; k < 3; k++) {
-            if (tabela[0][k] != ' ' && tabela[0][k] == tabela[1][k] && tabela[1][k] == tabela[2][k]){
-                zwyciezca = tabela[0][k];
-                break;
-            }
+        // KONIEC RUNDY - Wyświetlenie wyników
+        wypiszPlansze(plansza);
+
+        if (zwyciezca != ' '){
+            cout << "Gracz " << zwyciezca << " wygral!\n";
+        }
+        else {
+            cout << "Remis!\n";
         }
 
-        if(tabela[0][0] != ' ' && tabela[0][0] == tabela[1][1] && tabela[1][1] == tabela[2][2]) {
-            zwyciezca = tabela[0][0];
-        }
-        else if (tabela[0][2] != ' ' && tabela[0][2] == tabela[1][1] && tabela[1][1] == tabela[2][0]){
-            zwyciezca = tabela[0][2];
-        }
-    }
-    if(zwyciezca != ' ') {
-        cout << "Gracz " << zwyciezca << " wygral!" << endl;
-    }else {
-        cout << "Remis!" << endl;
-    }
+        // Interakcja końcowa - decyzja o kontynuacji
+        cout << "Gramy dalej [t/n]: ";
+        cin >> wybor;
+
+    } while (wybor == 't' || wybor == 'T');
+
+    return 0;
 }
