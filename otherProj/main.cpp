@@ -1,25 +1,44 @@
 #include <iostream>
+#include <string>
+#include <cctype>
+
 using namespace std;
 
-int max(int num1, int num2, int num3){
-    if (num1 > num2 && num1 > num3) {
-        return num1;
-    }else if (num2 > num1 && num2 > num3){
-        return num2;
-    }else{
-        return num3;
+void validacjaHasla(string& haslo) {
+    bool isUpper = false;
+    bool isLower = false;
+    bool isDigit = false;
+
+    for (char znak : haslo) {
+        if(isupper(znak)) {isUpper = true;}
+        if(islower(znak)) {isLower = true;}
+        if(isdigit(znak)) {isDigit = true;}
     }
-    
+
+    if(!isUpper) {
+        cout << "Blad: Nie ma duzej litery!" << endl;
+    }
+    if(!isLower) {
+        cout << "Blad: Nie ma malej litery!" << endl;
+    }
+    if(!isDigit) {
+        cout << "Blad: Niem ma liczb!" << endl;
+    }
+    if(haslo.length() < 8){
+        cout << "Blad: Haslo za krotkie! wprowadz minimum 8 znakow." << endl;
+    }
+    if(isUpper && isLower && isDigit && haslo.length() >= 8) {
+        cout << "Haslo poprawne!" << endl;
+    }
 }
 
 int main() {
-    int num1,num2,num3;
-    char q;
-    do
+    string haslo;    
+    while (haslo != "q" && haslo != "Q")
     {
-        cout << "3 liczby calkowite: ";
-        cin >> num1 >> num2 >> num3;
-        cout << "Najwieksza liczba: " << max(num1, num2, num3) << endl; 
-        cout << "Kontynuować ";
-    } while (q != 'q' || q != 'Q');
+        cout << "Podaj haslo: ";
+        cin >> haslo;
+        validacjaHasla(haslo);
+    };
+    cout << "\n Wyjscie z programu\n";
 }
