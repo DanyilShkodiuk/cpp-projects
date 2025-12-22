@@ -4,27 +4,23 @@ using namespace std;
 
 
 int main() {
-    const int N = 10;
-    int tablica[N];
-    
-    for(int i = 0; i < N; i++) {
-        cout << "Podaj liczbe nr " << i+1 << ": ";
-        cin >> tablica[i];
+    int N = 7;
+    int temperatura[N];
+    int suma = 0;
+    cout << "Wprowadz 7 losowych temperatur" << endl << endl;
+    for (int i = 0; i < N; i++){
+        cout << "Temperatura " << i+1 << ": ";
+        cin >> temperatura[i];
+        suma += temperatura[i];
     }
+    cout << endl;
+    int srednia = suma / N;
+    cout << "Srednia ocen: " << srednia << endl << endl;
 
-    cout <<"Tablica: ";
-    for(int i =0; i < N; i++) {
-        cout << tablica[i] << " ";
+    cout << "Wieksza od sredniej: "; 
+    for (int i = 0; i < N; i++) {
+        if(temperatura[i] > srednia){
+            cout << temperatura[i] << " ";
+        }
     }
-    
-    int max_val = tablica[0];
-    int min_val = tablica[0];
-
-    for(int i = 1; i < N; i++) {
-        if(tablica[i] > max_val) max_val = tablica[i];
-        if(tablica[i] < min_val) min_val = tablica[i];
-    }
-
-    cout << "\nMax: " << max_val << endl;
-    cout << "Min: " << min_val << endl;
 }
