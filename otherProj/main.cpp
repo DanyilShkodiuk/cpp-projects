@@ -6,32 +6,30 @@ using namespace std;
 
 int main() {
     int x = time(0);
-    int N = 4;
-    int matrix[N][N];
-    
     srand(x);
+    //1.stworz plansze
+    int matrix[5][5];
+    //2.wylosuj pozycje skarbu
+    int rowS = rand() % 5;
+    int colS = rand() % 5;
+    cout << rowS << " " << colS << endl;
 
-    for (int i = 0; i < N; i++){
-        for (int j = 0; j < N; j++) {
-            matrix[i][j] = 1 + rand() % 9;
+    //3.User podaje wspolrzedne
+    cout << "Podaj wspolrzedne (0-5): ";
+    int row = 0;
+    int col = 0;
+    
+    //4.informacja czy trafil czy nie
+    bool trafil = false;
+    
+    while(!trafil){
+        cout << "jakie: ";
+        cin >> row >> col;
+        if(row == rowS && col == colS) {
+            cout << "trafiles!" << endl;
+            trafil = true; 
+        } else {
+            cout << "nie trafiles" << endl;
         }
     }
-
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            cout << matrix[i][j] << " ";       
-        }
-        cout << endl;
-    }
-
-    int sumMain = 0;
-    int sumSecondary = 0;
-    for (int i = 0; i < N; i++) {
-        sumMain += matrix[i][i];
-        sumSecondary += matrix[i][N - 1 - i];
-    }
-
-    cout << "Suma przekatnej glownej: " << sumMain << endl;
-    cout << "Suma przekatnej bocznej: " << sumSecondary << endl;
-    return 0;
 }
