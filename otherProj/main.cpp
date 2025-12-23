@@ -1,35 +1,42 @@
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
+#include <limits>
+#include <map>
+
 using namespace std;
 
-
 int main() {
-    int x = time(0);
-    srand(x);
-    //1.stworz plansze
-    int matrix[5][5];
-    //2.wylosuj pozycje skarbu
-    int rowS = rand() % 5;
-    int colS = rand() % 5;
-    cout << rowS << " " << colS << endl;
+    int N;
+    cout << "Ile ocen chcesz wprowadzic? (2-5): ";
+    while (!(cin >> N) || N < 2 || N > 5) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Zly input. Podaj liczbe calkowita z przedzialu 2-5: ";
+    }
 
-    //3.User podaje wspolrzedne
-    cout << "Podaj wspolrzedne (0-5): ";
-    int row = 0;
-    int col = 0;
-    
-    //4.informacja czy trafil czy nie
-    bool trafil = false;
-    
-    while(!trafil){
-        cout << "jakie: ";
-        cin >> row >> col;
-        if(row == rowS && col == colS) {
-            cout << "trafiles!" << endl;
-            trafil = true; 
-        } else {
-            cout << "nie trafiles" << endl;
+    int* oceny = new int[N];
+    for (int i = 0; i < N; ++i) {
+        cout << "Ocena " << i+1 << ": ";
+        while (!(cin >> oceny[i])) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Niepoprawne dane. Podaj liczbe calkowita: ";
         }
     }
+
+    map<int,int> counts;
+    for (int i = 0; i < N; ++i) ++counts[oceny[i]];
+
+    cout << "\nWprowadzone oceny: ";
+    for (int i = 0; i < N; ++i) cout << oceny[i] << " ";
+
+    cout << "\n\nHistogram (gwiazdki = liczba wystapien):\n";
+    for (const auto& p : counts) {
+        cout << p.first << ": ";
+        for (int k = 0; k < p.second; ++k) cout << '*';
+        cout << " (" << p.second << ")\n";
+    }
+
+    delete[] oceny;
+    oceny = nullptr;
+    return 0;
 }
