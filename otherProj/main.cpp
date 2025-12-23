@@ -1,25 +1,42 @@
 #include <iostream>
+#include <limits>
+#include <map>
+
 using namespace std;
 
-int max(int num1, int num2, int num3){
-    if (num1 > num2 && num1 > num3) {
-        return num1;
-    }else if (num2 > num1 && num2 > num3){
-        return num2;
-    }else{
-        return num3;
-    }
-    
-}
-
 int main() {
-    int num1,num2,num3;
-    char q;
-    do
-    {
-        cout << "3 liczby calkowite: ";
-        cin >> num1 >> num2 >> num3;
-        cout << "Najwieksza liczba: " << max(num1, num2, num3) << endl; 
-        cout << "Kontynuować ";
-    } while (q != 'q' || q != 'Q');
+    int N;
+    cout << "Ile ocen chcesz wprowadzic? (2-5): ";
+    while (!(cin >> N) || N < 2 || N > 5) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Zly input. Podaj liczbe calkowita z przedzialu 2-5: ";
+    }
+
+    int* oceny = new int[N];
+    for (int i = 0; i < N; ++i) {
+        cout << "Ocena " << i+1 << ": ";
+        while (!(cin >> oceny[i])) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Niepoprawne dane. Podaj liczbe calkowita: ";
+        }
+    }
+
+    map<int,int> counts;
+    for (int i = 0; i < N; ++i) ++counts[oceny[i]];
+
+    cout << "\nWprowadzone oceny: ";
+    for (int i = 0; i < N; ++i) cout << oceny[i] << " ";
+
+    cout << "\n\nHistogram (gwiazdki = liczba wystapien):\n";
+    for (const auto& p : counts) {
+        cout << p.first << ": ";
+        for (int k = 0; k < p.second; ++k) cout << '*';
+        cout << " (" << p.second << ")\n";
+    }
+
+    delete[] oceny;
+    oceny = nullptr;
+    return 0;
 }
